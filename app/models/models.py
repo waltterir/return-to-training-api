@@ -1,6 +1,12 @@
 from typing import Optional
 from datetime import datetime, timezone
 from sqlmodel import SQLModel, Field, Relationship
+from enum import Enum
+
+class IntensityLevel(str, Enum):
+    easy = "easy"
+    moderate = "moderate"
+    hard = "hard"
 
 # --- USER ---
 
@@ -26,12 +32,12 @@ class UserRead(UserBase):
 # --- CHECK-IN ---
 
 class CheckInBase(SQLModel):
-    energy_level: int
-    motivation_level: int
-    stress_level: int
-    sleep_quality: int
-    days_since_last_workout: int
-    last_session_intensity: int
+    energy_level: int = Field(ge=1, le=5)
+    motivation_level: int = Field(ge=1, le=5)
+    stress_level: int = Field(ge=1, le=5)
+    sleep_quality: int = Field(ge=1, le=5)
+    days_since_last_workout: int = Field(ge=0)
+    last_session_intensity: IntensityLevel
 
 class CheckIn(CheckInBase, table=True):
     __tablename__ = "check_ins"
