@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from sqlalchemy import text
+from sqlmodel import SQLModel
 from app.database.database import engine
+from app.models.models import User, CheckIn, Training, Recommendation
+
+SQLModel.metadata.create_all(engine)
 
 app = FastAPI()
 
