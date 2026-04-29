@@ -2,18 +2,17 @@ from fastapi import FastAPI
 from sqlalchemy import text
 from sqlmodel import SQLModel
 from app.database.database import engine
-from app.models.models import User, CheckIn, Training, Recommendation
+from app.routes import checkin
+from contextlib import asynccontextmanager
 
-SQLModel.metadata.create_all(engine)
 
-app = FastAPI()
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    create_db_and_tables()
+    yield
 
-@app.get("/test-db")
-def test_db():
-    with engine.connect() as connection:
-        result = connection.execute(text("SELECT 1"))
-        return {"db": "connected"}
+app = FastAPI(lifespan=lifespan)
+app.include_router(checkin.router)
