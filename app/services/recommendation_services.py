@@ -10,11 +10,10 @@ def create_recommendation(db: Session, check_in_id: int) -> Recommendation:
         raise HTTPException(status_code=404, detail="Check-in not found")
     result = run_rules(check_in)
     db_recommendation = Recommendation.model_validate({
-        "result": result, 
+        **result, 
         "user_id": check_in.user_id,
         "check_in_id": check_in_id,
     })
-    db_recommendation.check_in_id = check_in_id
     db.add(db_recommendation)
     db.commit()
     db.refresh(db_recommendation)

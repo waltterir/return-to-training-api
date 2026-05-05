@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from sqlalchemy import text
 from sqlmodel import SQLModel
 from app.database.database import engine
-from app.routes import checkin
+from app.routes import checkin, recommendation
 from contextlib import asynccontextmanager
 
 
@@ -16,3 +16,5 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(checkin.router)
+app.include_router(recommendation.router)
+
