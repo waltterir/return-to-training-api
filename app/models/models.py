@@ -87,7 +87,7 @@ class TrainingRead(TrainingBase):
 class RecommendationBase(SQLModel):
     recommendation: str
     risk_level: str
-    suggested_training: str
+    suggested_session: str
     reason: str
     triggered_rules: str
 
